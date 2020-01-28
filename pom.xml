@@ -11,13 +11,13 @@
     </parent>
 
     <artifactId>stock-post-crawler</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
 
 
     <dependencies>
         <dependency>
             <groupId>com.pawpaw</groupId>
-            <artifactId>pawpaw-framework-core</artifactId>
+            <artifactId>pawpaw-framework-web</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
