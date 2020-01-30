@@ -2,9 +2,11 @@ package com.pawpaw.stock.post.eastmoney;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.processor.example.GithubRepoPageProcessor;
+import us.codecraft.webmagic.selector.Selectable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liujixin
@@ -14,22 +16,34 @@ import us.codecraft.webmagic.processor.example.GithubRepoPageProcessor;
 public class EastMoneyPageProcessor implements PageProcessor {
 
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
+    private Site site = Site.me()
+            .setRetryTimes(3)
+            .setSleepTime(1000)
+            .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
 
     @Override
     // process是定制爬虫逻辑的核心接口，在这里编写抽取逻辑
     public void process(Page page) {
-        // 部分二：定义如何抽取页面信息，并保存下来
-        page.putField("author", page.getUrl().regex("https://github\\.com/(\\w+)/.*").toString());
-        page.putField("name", page.getHtml().xpath("//h1[@class='entry-title public']/strong/a/text()").toString());
-        if (page.getResultItems().get("name") == null) {
-            //skip this page
-            page.setSkip(true);
+        //普通的用户发的帖子
+        Selectable normalPostHtml = page.getHtml().css("div.normal_post");
+        if (!normalPostHtml.match()) {
+            return;
         }
-        page.putField("readme", page.getHtml().xpath("//div[@id='readme']/tidyText()"));
+        List<NormalPost> normalPostList = normalPostHtml.nodes().stream().map(e -> {
+            String title = e.css("span.l3 a").get();
+            String author = e.css("span.l4 font").get();
+            String dateTime = e.css("span.l5").get();
 
+            NormalPost post = new NormalPost();
+            post.setAuthor(author);
+            post.setDateTime(dateTime);
+            post.setTitle(title);
+            return post;
+        }).collect(Collectors.toList());
+
+        page.putField("postList", normalPostList);
         // 部分三：从页面发现后续的url地址来抓取
-        page.addTargetRequests(page.getHtml().links().regex("(https://github\\.com/[\\w\\-]+/[\\w\\-]+)").all());
+        // page.addTargetRequests(page.getHtml().links().regex("(https://github\\.com/[\\w\\-]+/[\\w\\-]+)").all());
     }
 
     @Override

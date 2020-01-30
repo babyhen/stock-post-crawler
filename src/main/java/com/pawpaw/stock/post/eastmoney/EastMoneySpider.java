@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.processor.example.GithubRepoPageProcessor;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +25,8 @@ public class EastMoneySpider {
         StringBuilder startUrl = new StringBuilder();
         startUrl.append("http://guba.eastmoney.com/list,");
         startUrl.append(this.stockCode);
+        //按照发帖时间倒叙排列，否则默认会按照最后回复时间排列
+        startUrl.append(",f");
         startUrl.append(".html");
         log.info("起始地址为:{}", startUrl);
 
@@ -32,8 +35,12 @@ public class EastMoneySpider {
                 .addUrl(startUrl.toString())
                 //开启5个线程抓取
                 .thread(5)
+                //把下载下来的html源码打印下，帮助排查问题
+                .setDownloader(new ConsoleLogHttpClientDownloader())
+                //打印出来数据
+                .addPipeline(new ConsolePipeline())
+                .addPipeline(new AggregatePipeLine())
                 //启动爬虫
-
                 .run();
     }
 }
