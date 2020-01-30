@@ -25,14 +25,14 @@ public class EastMoneyPageProcessor implements PageProcessor {
     // process是定制爬虫逻辑的核心接口，在这里编写抽取逻辑
     public void process(Page page) {
         //普通的用户发的帖子
-        Selectable normalPostHtml = page.getHtml().css("div.normal_post");
+        Selectable normalPostHtml = page.getHtml().xpath("//div[@class='normal_post']");
         if (!normalPostHtml.match()) {
             return;
         }
         List<NormalPost> normalPostList = normalPostHtml.nodes().stream().map(e -> {
-            String title = e.css("span.l3 a").get();
-            String author = e.css("span.l4 font").get();
-            String dateTime = e.css("span.l5").get();
+            String title = e.xpath("//span[@class='l3']//a/text()").get();
+            String author = e.xpath("//span[@class='l4']//font/text()").get();
+            String dateTime = e.xpath("//span[@class='l5']/text()").get();
 
             NormalPost post = new NormalPost();
             post.setAuthor(author);

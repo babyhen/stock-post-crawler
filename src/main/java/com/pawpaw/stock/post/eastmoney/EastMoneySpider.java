@@ -1,14 +1,9 @@
 package com.pawpaw.stock.post.eastmoney;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
-import us.codecraft.webmagic.processor.example.GithubRepoPageProcessor;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 
 /**
