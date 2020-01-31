@@ -33,6 +33,7 @@ public class EastMoneyPageProcessor implements PageProcessor {
     private final Date end;
 
     private final AtomicInteger currPage;
+    public static final String keyForPostList = "postList";
 
 
     public EastMoneyPageProcessor(String stockCode, Date begin, Date end) {
@@ -65,9 +66,8 @@ public class EastMoneyPageProcessor implements PageProcessor {
             String author = e.xpath("//span[@class='l4']//font/text()").get();
             //01-30 22:15
             String dateTime = e.xpath("//span[@class='l5']/text()").get();
-            int blankIndex = dateTime.indexOf(" ");
-            String date = StringUtils.substring(dateTime, 0, blankIndex);
-            date = currYear + "-" + date;
+
+            String date = currYear + "-" + dateTime + ":00";
             Date d = TimeUtil.parse(date, TIME_FORMAT_10);
             if (d.after(new Date())) {
                 //去年的帖子,这里不考虑是否是前年的，没有意义，这里默认是去年的就行了。我们搜集的时间范围只能是距今1年之内的
@@ -81,7 +81,7 @@ public class EastMoneyPageProcessor implements PageProcessor {
             return post;
         }).collect(Collectors.toList());
 
-        page.putField("postList", normalPostList);
+        page.putField(keyForPostList, normalPostList);
 
         //从页面发现后续的url地址来抓取
         NormalPost last = normalPostList.get(normalPostList.size() - 1);

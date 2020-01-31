@@ -13,7 +13,7 @@ public class EastMoneyTest {
     @Test
     public void openBrownse() throws JsonProcessingException {
         String stockCode = "300324";
-        String startDate = "20190620";
+        String startDate = "20200120";
         String endDate = "20200128";
         //
         Date begin = TimeUtil.parse(startDate, TIME_FORMAT_8);
