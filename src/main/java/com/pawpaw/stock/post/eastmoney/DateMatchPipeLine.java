@@ -2,6 +2,7 @@ package com.pawpaw.stock.post.eastmoney;
 
 import com.pawpaw.framework.core.common.util.TimeUtil;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
@@ -25,6 +26,7 @@ public class DateMatchPipeLine implements Pipeline {
         this.end = end;
     }
 
+    @Getter
     private List<NormalPost> match = new LinkedList<>();
 
     @Override

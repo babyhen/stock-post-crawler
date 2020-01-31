@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.Spider;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author liujixin
@@ -25,7 +26,7 @@ public class EastMoneySpider {
 
     }
 
-    public void start() {
+    public List<NormalPost> start() {
         Date oneYearAgo = TimeUtil.minusYear(new Date(), 1);
         if (begin.before(oneYearAgo)) {
             throw new RuntimeException("开始时间不能抓取1年之前");
@@ -47,5 +48,6 @@ public class EastMoneySpider {
                 .addPipeline(dateMatchPipeLine)
                 //启动爬虫
                 .run();
+        return dateMatchPipeLine.getMatch();
     }
 }
