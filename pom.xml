@@ -12,6 +12,7 @@
 
     <artifactId>stock-post-crawler</artifactId>
     <version>1.0.0-RELEASE</version>
+    <packaging>war</packaging>
 
 
     <dependencies>
@@ -40,5 +41,14 @@
         </dependency>
 
     </dependencies>
+
+
+
+
+    <build>
+
+
+
+    </build>
 
 </project>
