@@ -16,8 +16,8 @@ public class EastMoneyTest {
         String startDate = "20200120";
         String endDate = "20200128";
         //
-        Date begin = TimeUtil.parse(startDate, TIME_FORMAT_8);
-        Date end = TimeUtil.parse(endDate, TIME_FORMAT_8);
+        Date begin = TimeUtil.parseDate(startDate, TIME_FORMAT_8);
+        Date end = TimeUtil.parseDate(endDate, TIME_FORMAT_8);
         //
         EastMoneySpider spider = new EastMoneySpider(stockCode, begin, end);
         spider.start();

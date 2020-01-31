@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.pawpaw.framework.core.common.util.TimeUtil.TIME_FORMAT_10;
+import static com.pawpaw.framework.core.common.util.TimeUtil.TIME_FORMAT_19;
 
 /**
  * @author liujixin
@@ -68,7 +69,7 @@ public class EastMoneyPageProcessor implements PageProcessor {
             String dateTime = e.xpath("//span[@class='l5']/text()").get();
 
             String date = currYear + "-" + dateTime + ":00";
-            Date d = TimeUtil.parse(date, TIME_FORMAT_10);
+            Date d = TimeUtil.parseDateTime(date, TIME_FORMAT_19);
             if (d.after(new Date())) {
                 //去年的帖子,这里不考虑是否是前年的，没有意义，这里默认是去年的就行了。我们搜集的时间范围只能是距今1年之内的
                 d = TimeUtil.minusYear(d, 1);
