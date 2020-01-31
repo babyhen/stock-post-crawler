@@ -12,7 +12,7 @@
 
     <artifactId>stock-post-crawler</artifactId>
     <version>1.0.0-RELEASE</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
 
     <dependencies>
@@ -43,10 +43,7 @@
     </dependencies>
 
 
-
-
     <build>
-
 
 
     </build>

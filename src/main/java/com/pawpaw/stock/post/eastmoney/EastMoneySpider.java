@@ -26,7 +26,7 @@ public class EastMoneySpider {
 
     }
 
-    public List<NormalPost> start() {
+    public void start() {
         Date oneYearAgo = TimeUtil.minusYear(new Date(), 1);
         if (begin.before(oneYearAgo)) {
             throw new RuntimeException("开始时间不能抓取1年之前");
@@ -48,6 +48,7 @@ public class EastMoneySpider {
                 .addPipeline(dateMatchPipeLine)
                 //启动爬虫
                 .run();
-        return dateMatchPipeLine.getMatch();
+        ResultCollector.getInstance().setResult(dateMatchPipeLine.getMatch());
+
     }
 }
