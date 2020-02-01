@@ -25,12 +25,8 @@ public class BootStrap {
         PawpawWebApplication application = new PawpawWebApplication();
         application.run(BootStrap.class);
         String stockCode = "300324";
-        String startDate = "20200127";
-        String endDate = "20200128";
-        Date begin = TimeUtil.parseDate(startDate, TIME_FORMAT_8);
-        Date end = TimeUtil.parseDate(endDate, TIME_FORMAT_8);
         //
-        EastMoneySpider spider = new EastMoneySpider(stockCode, begin, end);
+        EastMoneySpider spider = new EastMoneySpider(stockCode);
         spider.start();
         System.out.println("finish parse " + stockCode);
         //打开浏览器

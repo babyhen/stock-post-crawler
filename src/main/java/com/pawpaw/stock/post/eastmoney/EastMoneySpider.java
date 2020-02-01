@@ -19,10 +19,10 @@ public class EastMoneySpider {
     private Date begin;
     private Date end;
 
-    public EastMoneySpider(String stockCode, Date begin, Date end) {
+    public EastMoneySpider(String stockCode) {
         this.stockCode = stockCode;
-        this.begin = TimeUtil.midnightTime(begin);
-        this.end = TimeUtil.lastTimeOfDay(end);
+        this.begin = new Date();
+        this.end = TimeUtil.minusYear(begin, 1);
 
     }
 
