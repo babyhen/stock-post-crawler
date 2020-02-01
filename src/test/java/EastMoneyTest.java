@@ -13,10 +13,12 @@ public class EastMoneyTest {
     @Test
     public void openBrownse() throws JsonProcessingException {
         String stockCode = "300324";
-
-        //
-        EastMoneySpider spider = new EastMoneySpider(stockCode);
-        spider.start();
+        String startDate = "20200127";
+        String endDate = "20200128";
+        Date begin = TimeUtil.parseDate(startDate, TIME_FORMAT_8);
+        Date end = TimeUtil.parseDate(endDate, TIME_FORMAT_8);
+        EastMoneySpider spider = new EastMoneySpider(stockCode,begin,end);
+       spider.start();
         System.out.println("finish parse " + stockCode);
     }
 

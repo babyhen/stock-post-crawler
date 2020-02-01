@@ -35,17 +35,18 @@ public class EastMoneyPageProcessor implements PageProcessor {
 
     private final AtomicInteger currPage;
     public static final String keyForPostList = "postList";
+    //来计算发帖时间属于哪一年
+    private volatile int currYear = LocalDate.now().getYear();
+    private volatile int currMonth = LocalDate.now().getMonthValue();
 
 
-    public EastMoneyPageProcessor(String stockCode, Date begin, Date end) {
+    public EastMoneyPageProcessor(String stockCode, int startPage, Date begin, Date end) {
         this.stockCode = stockCode;
         this.begin = begin;
         this.end = end;
-        this.currPage = new AtomicInteger(1);
+        this.currPage = new AtomicInteger(startPage);
     }
 
-
-    private int currYear = LocalDate.now().getYear();
 
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site site = Site.me()
@@ -67,14 +68,10 @@ public class EastMoneyPageProcessor implements PageProcessor {
             String author = e.xpath("//span[@class='l4']//font/text()").get();
             //01-30 22:15
             String dateTime = e.xpath("//span[@class='l5']/text()").get();
-
+            //可能进入新的1年，这里需要猜测下
+            this.freshYear(dateTime);
             String date = currYear + "-" + dateTime + ":00";
             Date d = TimeUtil.parseDateTime(date, TIME_FORMAT_19);
-            if (d.after(new Date())) {
-                //去年的帖子,这里不考虑是否是前年的，没有意义，这里默认是去年的就行了。我们搜集的时间范围只能是距今1年之内的
-                d = TimeUtil.minusYear(d, 1);
-            }
-
             NormalPost post = new NormalPost();
             post.setAuthor(author);
             post.setDateTime(d);
@@ -95,6 +92,7 @@ public class EastMoneyPageProcessor implements PageProcessor {
             page.addTargetRequests(urlList);
 
         }
+        //
     }
 
     @Override
@@ -102,5 +100,33 @@ public class EastMoneyPageProcessor implements PageProcessor {
         return site;
     }
 
+
+    private void freshYear(String date) {
+        String month = StringUtils.substring(date, 0, 2);
+        int monthInt = Integer.parseInt(month);
+        if (monthInt < currMonth) {
+            //小于的话，更新月份
+            synchronized (this) {
+                if (monthInt < currMonth) {
+                    this.currMonth = monthInt;
+                }
+            }
+
+            return;
+        } else if (monthInt > currMonth) {
+            //大于的话，说明进入了新的1年，需要更新年份和月份
+            synchronized (this) {
+                if (monthInt > currMonth) {
+                    this.currYear--;
+                    this.currMonth = monthInt;
+                }
+
+            }
+        } else {
+            //noop
+        }
+
+
+    }
 
 }
