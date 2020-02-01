@@ -6,6 +6,8 @@ import com.pawpaw.stock.post.eastmoney.ResultCollector;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import sun.nio.ch.sctp.ResultContainer;
 
@@ -25,9 +27,16 @@ import java.util.stream.Collectors;
 public class EastMoneyController {
 
 
-    @GetMapping("/aggregateResult")
-    public ModelAndView aggregateResult() {
+    @GetMapping("/aggregateResultPage")
+    public ModelAndView aggregateResultPage() {
         ModelAndView mv = new ModelAndView("eastMoneyAggregateResult");
+        return mv;
+
+    }
+
+    @GetMapping("/aggregateResult")
+    public @ResponseBody
+    Map<String, Integer> aggregateResult() {
         //从日期纬度统计
         //按照日期分组
         List<NormalPost> post = ResultCollector.getInstance().getResult();
@@ -36,7 +45,11 @@ public class EastMoneyController {
             return date;
 
         }, TreeMap::new, Collectors.toList()));
-        mv.addObject(groupedMap);
-        return mv;
+        TreeMap<String, Integer> r = new TreeMap<>();
+        for (Map.Entry<Date, List<NormalPost>> entry : groupedMap.entrySet()) {
+            r.put(TimeUtil.format8(entry.getKey()), entry.getValue().size());
+        }
+        return r;
+
     }
 }

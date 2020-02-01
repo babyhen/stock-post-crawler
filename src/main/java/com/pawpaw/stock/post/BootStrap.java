@@ -35,7 +35,7 @@ public class BootStrap {
         System.out.println("finish parse " + stockCode);
         //打开浏览器
         StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append("http://localhost:8080/eastMoney/aggregateResult");
+        urlBuilder.append("http://localhost:8080/eastMoney/aggregateResultPage");
         BrowserUtil.openBrownse(urlBuilder.toString());
     }
 }
