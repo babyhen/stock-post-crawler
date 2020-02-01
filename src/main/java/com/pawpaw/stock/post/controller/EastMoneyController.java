@@ -36,7 +36,7 @@ public class EastMoneyController {
 
     @GetMapping("/aggregateResult")
     public @ResponseBody
-    Map<String, Integer> aggregateResult() {
+    EastMoneyPostNumberAggregate aggregateResult() {
         //从日期纬度统计
         //按照日期分组
         List<NormalPost> post = ResultCollector.getInstance().getResult();
@@ -45,9 +45,9 @@ public class EastMoneyController {
             return date;
 
         }, TreeMap::new, Collectors.toList()));
-        TreeMap<String, Integer> r = new TreeMap<>();
+        EastMoneyPostNumberAggregate r = new EastMoneyPostNumberAggregate();
         for (Map.Entry<Date, List<NormalPost>> entry : groupedMap.entrySet()) {
-            r.put(TimeUtil.format8(entry.getKey()), entry.getValue().size());
+            r.add(TimeUtil.format10(entry.getKey()), entry.getValue().size());
         }
         return r;
 

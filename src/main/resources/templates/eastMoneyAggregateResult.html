@@ -2,13 +2,47 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Thymeleaf入门案例</title>
+    <title></title>
     <script type="text/javascript" src="/static/echart/echarts.js"></script>
+    <script type="text/javascript" src="/static/jquery/jquery-3.4.1.min.js"></script>
 
 
 </head>
 <body>
-<h1>Thymeleaf入门案例:</h1>
-<div>1122</div>
+<h1>帖子数量变化曲线:</h1>
+
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="postNumber" style="width: 600px;height:400px;"></div>
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('postNumber'));
+
+    //ajax获取数据
+    $.get('/eastMoney/aggregateResult', function (data) {
+        var code = data.code;
+        if (code != 1) {
+            return;
+        }
+        data = data.data;
+        myChart.setOption({
+            title: {text: '帖子数量'},
+            xAxis: {
+                type: 'category',
+                data: data.dates
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: data.numbers,
+                type: 'line'
+            }]
+        });
+    }, 'json');
+
+</script>
+
+
 </body>
 </html>
