@@ -27,8 +27,7 @@ public class EastMoneyController {
 
     @GetMapping("/aggregateResult")
     public ModelAndView aggregateResult() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("eastMoneyAggregateResult");
+        ModelAndView mv = new ModelAndView("eastMoneyAggregateResult");
         //从日期纬度统计
         //按照日期分组
         List<NormalPost> post = ResultCollector.getInstance().getResult();
