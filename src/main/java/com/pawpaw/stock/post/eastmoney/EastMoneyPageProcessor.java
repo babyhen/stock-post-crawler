@@ -81,7 +81,7 @@ public class EastMoneyPageProcessor implements PageProcessor {
 
         page.putField(keyForPostList, normalPostList);
 
-        //从页面发现后续的url地址来抓取
+        //从页面发现后续的url地址来抓取,如果比开始时间早，那么抓去就结束了
         NormalPost last = normalPostList.get(normalPostList.size() - 1);
         if (TimeUtil.afterOrEqual(last.getDateTime(), begin)) {
             int nextPage = currPage.incrementAndGet();

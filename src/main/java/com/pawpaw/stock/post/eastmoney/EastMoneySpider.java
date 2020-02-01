@@ -49,7 +49,7 @@ public class EastMoneySpider {
                 //从这个地址开始抓取
                 .addUrl(startUrl.toString())
                 //开启5个线程抓取
-                .thread(1)
+                .thread(5)
                 //把下载下来的html源码打印下，帮助排查问题
                 .setDownloader(new ConsoleLogHttpClientDownloader())
                 //打印出来数据
