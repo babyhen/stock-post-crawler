@@ -27,7 +27,7 @@ public class EastMoneySpider {
     }
 
     public void start() {
-        Date oneYearAgo = TimeUtil.minusYear(new Date(), 1);
+        Date oneYearAgo = TimeUtil.minusYear(this.end, 1);
         if (begin.before(oneYearAgo)) {
             throw new RuntimeException("开始时间不能抓取1年之前");
         }
