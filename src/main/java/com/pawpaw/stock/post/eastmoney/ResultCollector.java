@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import sun.security.jca.GetInstance;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class ResultCollector {
 
     private volatile static ResultCollector instance;
 
-    @Getter
+
     @Setter
     private List<NormalPost> result;
 
@@ -34,5 +35,11 @@ public class ResultCollector {
         return instance;
     }
 
+    public List<NormalPost> getResult() {
+        if (this.result == null) {
+            this.result = new LinkedList<>();
+        }
+        return this.result;
+    }
 
 }
