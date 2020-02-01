@@ -21,8 +21,8 @@ public class EastMoneySpider {
 
     public EastMoneySpider(String stockCode) {
         this.stockCode = stockCode;
-        this.begin = new Date();
-        this.end = TimeUtil.minusYear(begin, 1);
+        this.end = new Date();
+        this.begin = TimeUtil.minusYear(end, 1);
 
     }
 
