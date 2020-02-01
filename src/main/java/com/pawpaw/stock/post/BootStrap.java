@@ -7,6 +7,7 @@ import com.pawpaw.stock.post.eastmoney.EastMoneySpider;
 import com.pawpaw.stock.post.eastmoney.NormalPost;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Date;
 import java.util.List;
