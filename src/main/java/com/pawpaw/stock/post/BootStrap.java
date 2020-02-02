@@ -4,28 +4,21 @@ import com.pawpaw.framework.core.common.util.BrowserUtil;
 import com.pawpaw.framework.core.common.util.TimeUtil;
 import com.pawpaw.framework.web.PawpawWebApplication;
 import com.pawpaw.stock.post.eastmoney.EastMoneySpider;
-import com.pawpaw.stock.post.eastmoney.NormalPost;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
-import static com.pawpaw.framework.core.common.util.TimeUtil.TIME_FORMAT_8;
+import static com.pawpaw.framework.core.common.util.TimeUtil.TIME_FORMAT_10;
 
 @SpringBootApplication
 public class BootStrap {
 
 
     public static void main(String[] args) {
-        if (args.length < 3) {
-            System.out.println("useage:");
-            System.out.println("stockcode startDate endDate");
-            System.out.println("for example: 300324 20190101,20190201");
+        if (args.length < 2) {
+            System.out.println("useage:抓去指定的开始时间至今的帖子数量");
+            System.out.println("stockcode startDate");
+            System.out.println("for example: 300324 2019-01-01");
             return;
         }
 
@@ -33,9 +26,8 @@ public class BootStrap {
         application.run(BootStrap.class);
         String stockCode = args[0];
         String startDate = args[1];
-        String endDate = args[2];
-        Date begin = TimeUtil.parseDate(startDate, TIME_FORMAT_8);
-        Date end = TimeUtil.parseDate(endDate, TIME_FORMAT_8);
+        Date begin = TimeUtil.parseDate(startDate, TIME_FORMAT_10);
+        Date end = new Date();
 
 
         // EastMoneySpider spider = new EastMoneySpider(stockCode);
